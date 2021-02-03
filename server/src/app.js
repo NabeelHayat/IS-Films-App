@@ -2,6 +2,8 @@ import express    from 'express';
 import bodyParser from 'body-parser';
 import morgan     from 'morgan';
 
+import routes     from './routes';
+
 const app          = express();
 
 // HTTP request logger middleware for development environment.
@@ -20,6 +22,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 
 // mount all routes
-// app.use('/', routes);
+app.use('/', routes);
 
 export default app;
