@@ -1,0 +1,1 @@
+NODE_ENV=production  cd server && yarn build && cd .. && cd client && yarn build && cd ..
