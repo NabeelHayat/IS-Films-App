@@ -1,0 +1,56 @@
+{
+  "name": "is-films-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "engines": {
+    "node": "14.15.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NabeelHayat/IS-Films-App.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NabeelHayat/IS-Films-App.git/issues"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "passport",
+    "eslint"
+  ],
+  "author": "Nabeel Hayat <nabeel.hayat87@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start-prod": "yarn build && node dist/bin/www.js",
+    "start-dev": "babel-watch src/bin/www.js",
+    "server": "babel-watch src/bin/www.js",
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "build": "yarn clean && yarn build-babel",
+    "clean": "rm -rf ./dist && mkdir ./dist",
+    "build-babel": "babel -d ./dist ./src -s",
+    "client": "npm start --prefix ../client"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.12.13",
+    "@babel/core": "^7.12.13",
+    "@babel/node": "^7.12.13",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
+    "@babel/register": "^7.12.13",
+    "babel-watch": "^7.3.0",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "joi": "^17.3.0",
+    "mongoose": "^5.11.14",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

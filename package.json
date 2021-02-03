@@ -1,0 +1,59 @@
+{
+  "name": "is-films-app",
+  "version": "1.0.0",
+  "description": "A film application built using Node, MongoDB and React.",
+  "main": "server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NabeelHayat/IS-Films-App.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NabeelHayat/IS-Films-App.git/issues"
+  },
+  "keywords": [
+    "react",
+    "express",
+    "passport",
+    "eslint"
+  ],
+  "author": "Nabeel Hayat <nabeel.hayat87@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "./scripts/build-prod.sh",
+    "start-dev": "./scripts/build-dev.sh",
+    "build-dev": "./scripts/watch-dev.sh",
+    "build": "./scripts/watch-prod.sh",
+    "lint": "eslint server client",
+    "lint:fix": "eslint server client --fix",
+    "eslint-check": "eslint --print-config .eslintrc.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "hasky": "^3.0.2",
+    "lint": "^0.7.0",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js, jsx}": [
+      "eslint"
+    ],
+    "*.{js, jsx, json, md}": [
+      "prettier --list-different"
+    ]
+  }
+}
