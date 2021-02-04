@@ -29,3 +29,7 @@ export const filmSchema = Joi.object().keys({
   country: Joi.string().required(),
   genre: Joi.array().items(Joi.string()).required(),
 });
+
+export const filmIdSchema = Joi.object().keys({
+  filmId: Joi.string().guid().required(),
+});

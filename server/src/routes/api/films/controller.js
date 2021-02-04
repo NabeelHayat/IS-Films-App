@@ -4,6 +4,18 @@ import { filmSchema } from '../../../services/validators';
 import { removeFailedFile } from '../../../middleware/multerUpload';
 
 export default {
+  getFilm: async (req, res) => {
+    const { filmId } = req;
+    if (!filmId) return res.status(404).json({ message: 'No film found.' });
+    try {
+      const film = await FilmModel.findOne({ _id: filmId });
+      if (!film) return res.status(404).json({ message: 'No film foun d.' });
+      res.json({ film: [film] });
+    } catch (err) {
+      res.status(500).json({ message: 'Something went wrong.' });
+    }
+  },
+
   fetchFilms: async (req, res) => {
     try {
       const films = await FilmModel.find({});

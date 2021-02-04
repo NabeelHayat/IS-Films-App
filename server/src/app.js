@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Example: http://localhost:3000/favicon.ico => Display "~/docs/statics/favicon.png"
 app.use(express.static(path.join(__dirname, './../../client/build')));
 // For any other routes, redirect to the index.html file of React
-app.get('/*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './../../client/build/index.html'));
 });
 
