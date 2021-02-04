@@ -86,6 +86,7 @@ typings/
 .nuxt
 dist
 build
+public/images
 
 # Gatsby files
 .cache/
