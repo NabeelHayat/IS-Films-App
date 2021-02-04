@@ -23,7 +23,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "yarn build && node dist/bin/www",
+    "start": "node dist/bin/www",
     "start-dev": "babel-watch src/bin/www.js",
     "server": "babel-watch src/bin/www.js",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
