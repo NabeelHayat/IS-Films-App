@@ -1,0 +1,17 @@
+{
+  "development": {
+      "NODE_ENV": "development",
+      "app_name": "my app",
+      "app_desc": "my app desc",
+      "PORT": 3000,
+      "json_indentation": 4,
+      "DATATBASE_URL": "my-app-db-dev",
+      "secretOrKey": "IS_FILM_SECRECT_OR_KEY"
+  },
+  "production": {
+      "NODE_ENV": "production",
+      "PORT": 8080,
+      "DATATBASE_URL": "my-app-db-prod",
+      "secretOrKey": "IS_FILM_SECRECT_OR_KEY"
+  }
+}
