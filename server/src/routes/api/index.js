@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import accountRouter from './account';
-import filmsRouter from './films';
+import accountRouter from './account/router';
+import filmsRouter from './films/router';
 
 const router = Router();
 

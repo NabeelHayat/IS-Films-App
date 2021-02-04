@@ -28,7 +28,9 @@
     "lint:fix": "eslint server client --fix",
     "eslint-check": "eslint --print-config .eslintrc.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "passport-local-mongoose": "^6.1.0"
+  },
   "devDependencies": {
     "eslint": "^7.2.0",
     "eslint-config-airbnb": "18.2.1",

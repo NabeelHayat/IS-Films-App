@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import mongoose from 'mongoose';
+import passportLocalMongoose from 'passport-local-mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
@@ -121,6 +122,8 @@ export const validateUser = (user) => {
 
   return Joi.validate(user, schema);
 };
+
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 const User = mongoose.model('User', userSchema);
 
