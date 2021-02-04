@@ -1,12 +1,9 @@
+/* eslint-disable consistent-return */
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import { Strategy as JWTstrategy, ExtractJwt as JWTExtract } from 'passport-jwt';
-import Joi from 'joi';
 import User from '../models/user';
-import { loginSchema } from './validators';
 import config from '../config';
-
-const { secretOrKey } = config;
 
 const LocalStrategy = passportLocal.Strategy;
 
@@ -52,36 +49,29 @@ export default ({ app }) => {
     new LocalStrategy(
       {
         usernameField: 'email',
-        passwordField: 'password',
-        session: false,
-        passReqToCallback: true, // this is the virtual field on the model
+        passwordField: 'password', // this is the virtual field on the model
       },
-      async (req, email, password, done) => {
-        const { error } = Joi.validate(req.body, loginSchema);
+      (email, password, done) => {
+        User.findOne({ email })
+          .then(user => {
+            console.log('User: ', user);
 
-        if (error) {
-          return done(null, false, { message: error.details[0].message });
-        }
-
-        try {
-          const user = await User.findOne({ email: email.trim() });
-          if (!user) {
-            return done(null, false, { message: 'Email does not exists.' });
-          }
-
-          user.comparePassword(password, (err, isMatch) => {
-            if (err) {
-              return done(err);
+            if (!user) {
+              return done(null, false, {
+                message: 'This email is not registered.',
+              });
             }
-            if (!isMatch) {
-              return done(null, false, { message: 'Incorrect password.' });
+
+            if (!user.authenticate()) {
+              return done(null, false);
             }
 
             return done(null, user);
+          })
+          .catch(error => {
+            console.log('Error: ', error);
+            if (error) return done(error);
           });
-        } catch (err) {
-          return done(err);
-        }
       },
     ),
   );
@@ -90,21 +80,11 @@ export default ({ app }) => {
     new JWTstrategy(
       {
         jwtFromRequest: JWTExtract.fromAuthHeaderAsBearerToken(),
-        secretOrKey,
+        secretOrKey: config.secretOrKey,
       },
-      async (payload, done) => {
-        try {
-          const user = await User.findById(payload.id);
-
-          if (user) {
-            done(null, user);
-          } else {
-            done(null, false);
-          }
-        } catch (err) {
-          done(err, false);
-        }
-      },
+      (jwtPayload, cb) => User.find({ userId: jwtPayload.userId }, '-_id -__v -createdAt')
+        .then(user => cb(null, user))
+        .catch(err => cb(err)),
     ),
   );
 
