@@ -3,7 +3,7 @@ module.exports = {
   root: true,
   extends: 'airbnb',
   parserOptions: {
-    ecmaVersion: 7,
+    ecmaVersion: 8,
     sourceType: "module",
     allowImportExportEverywhere: false,
   },
@@ -28,7 +28,7 @@ module.exports = {
     }, {
       enforceForRenamedProperties: false
     }],
-    'space-before-function-paren': [2, 'never'],
+    'space-before-function-paren': ['error', { 'anonymous': 'ignore', 'named': 'always' }],
 
     // disable defaults
     'arrow-parens': 0,
@@ -45,5 +45,6 @@ module.exports = {
     'no-underscore-dangle': 0,
     'object-curly-newline': 0,
     'padded-blocks': 0,
+    'comma-dangle': 0,
   },
 };

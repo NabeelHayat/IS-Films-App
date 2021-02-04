@@ -15,7 +15,7 @@ module.exports = {
   extends: ["airbnb", "airbnb/hooks", "plugin:prettier/recommended", "eslint:recommended", "prettier/react"],
   parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 7,
+    ecmaVersion: 8,
     sourceType: 'module',
     allowImportExportEverywhere: false,
   },
@@ -66,5 +66,6 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/state-in-constructor': 0,
     'react/static-property-placement': 0,
+    'comma-dangle': 0,
   },
 };
