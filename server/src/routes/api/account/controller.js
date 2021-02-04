@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Joi from 'joi';
 
 import UserModel from '../../../models/user';
@@ -5,13 +6,29 @@ import token from '../../../utils/token';
 import { registerSchema, loginSchema } from '../../../services/validators';
 
 export default {
-  userLogin: (req, res) => {
-    const { error } = Joi.validate(req.body, loginSchema);
+  loginResponse: (req, res) => {
+    const { user } = req;
+    req.login(user, { session: false }, err => {
+      if (err) {
+        return res.status(422).send({ message: err });
+      }
+
+      const token = req.user.generateJWT();
+      const me = req.user.toJSON();
+      res.json({ token, profile: me });
+    });
+  },
+
+  userLogin: (req, res, next) => {
+    const { error } = loginSchema.validate(req.body);
     if (error) {
       return res.status(422).send({ message: error.details[0].message });
     }
 
     const { email, password } = req.body;
+
+    req.body.email = email.toLowerCase();
+
     if (!email || !password) {
       return res.status(422).send({ error: 'You must provide a valid email or password.' });
     }
@@ -20,25 +37,17 @@ export default {
       email,
     }, (err, existingUser) => {
       if (err || !existingUser) {
-        return res.status(401).send(err || { error: 'User Not Found' });
+        return res.status(401).send({ error: 'User Not Found' });
       }
       if (existingUser) {
-        existingUser.comparedPassword(password, (err, good) => {
-          if (err || !good) {
-            return res.status(401).send(err || 'User not found');
-          }
-
-          res.send({
-            token: token.generateToken(existingUser)
-          });
-        });
+        next();
       }
     });
   },
 
   // Signup new user.
   userSignUp: async (req, res, next) => {
-    const { error } = Joi.validate(req.body, registerSchema);
+    const { error } = registerSchema.validate(req.body);
     if (error) {
       return res.status(422).send({ message: error.details[0].message });
     }
@@ -53,17 +62,23 @@ export default {
       }
 
       try {
-        const newUser = await new UserModel({
-          email,
+        UserModel.register(
+          new UserModel({
+            email: email.toLowerCase(),
+            username,
+            name,
+          }),
           password,
-          username,
-          name,
-        });
-
-        newUser.registerUser(newUser, (err, _user) => {
-          if (err) throw err;
-          res.json({ message: 'Register success.' }); // just redirect to login
-        });
+          (err, account) => {
+            console.log(account);
+            if (err) {
+              console.log(`ERROR${err}`);
+              next(err);
+            }
+            req.user = account;
+            res.json({ message: 'Register success.' }); // just redirect to login
+          },
+        );
       } catch (err) {
         return next(err);
       }

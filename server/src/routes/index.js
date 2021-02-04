@@ -15,7 +15,7 @@ api.get('/health-check', (req, res) => res.send('OK'));
 
 // For any other routes, redirect to the index.html file of React
 api.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, './../../client/build/index.html'));
+  res.sendFile(path.join(__dirname, './../../../client/build/index.html'));
 });
 
 export default api;

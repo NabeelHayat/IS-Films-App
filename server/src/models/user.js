@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 import mongoose from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Joi from 'joi';
 import { v1 as uuidv1 } from 'uuid';
+
+import config from '../config';
+
+const { secretOrKey } = config;
 
 const { Schema } = mongoose;
 
@@ -55,9 +57,6 @@ userSchema.methods.toJSON = function() {
   };
 };
 
-const isProduction = process.env.NODE_ENV === 'production';
-const secretOrKey = isProduction ? process.env.JWT_SECRET_PROD : process.env.JWT_SECRET_DEV;
-
 userSchema.methods.generateJWT = function() {
   const token = jwt.sign(
     {
@@ -69,58 +68,6 @@ userSchema.methods.generateJWT = function() {
     secretOrKey
   );
   return token;
-};
-
-userSchema.methods.registerUser = (newUser, callback) => {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(newUser.password, salt, (errh, hash) => {
-      if (err) {
-        console.log(err);
-      }
-      // set pasword to hash
-      newUser.password = hash;
-      newUser.save(callback);
-    });
-  });
-};
-
-userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) return callback(err);
-    callback(null, isMatch);
-  });
-};
-
-export async function hashPassword (password) {
-  const saltRounds = 10;
-
-  const hashedPassword = await new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) reject(err);
-      else resolve(hash);
-    });
-  });
-
-  return hashedPassword;
-}
-
-export const validateUser = (user) => {
-  const schema = {
-    name: Joi.string().min(2).max(30).required(),
-    username: Joi.string()
-      .min(2)
-      .max(20)
-      .regex(/^[a-zA-Z0-9_]+$/)
-      .required(),
-    email: Joi.string().email(),
-    password: Joi.string()
-      .min(6)
-      .max(20)
-      .allow('')
-      .allow(null),
-  };
-
-  return Joi.validate(user, schema);
 };
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
