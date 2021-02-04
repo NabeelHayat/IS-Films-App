@@ -5,10 +5,14 @@ import requireLocalAuth from '../../../middleware/requireLocalAuth';
 
 const router = Router();
 
-// router.get('/profile', (req, res) => res.send(req.user));
+router
+  .route('/login')
+  /** POST /api/v1/account/login - User login */
+  .post(AccountController.userLogin, requireLocalAuth, AccountController.loginResponse);
 
-router.route('/login').post(AccountController.userLogin, requireLocalAuth, AccountController.loginResponse);
-
-router.route('/register').post(AccountController.userSignUp);
+router
+  .route('/register')
+  /** POST /api/v1/account/register - New user signup */
+  .post(AccountController.userSignUp);
 
 export default router;

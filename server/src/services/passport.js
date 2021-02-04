@@ -2,7 +2,7 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 import { Strategy as JWTstrategy, ExtractJwt as JWTExtract } from 'passport-jwt';
-import User from '../models/user';
+import UserModel from '../models/user';
 import config from '../config';
 
 const LocalStrategy = passportLocal.Strategy;
@@ -52,9 +52,8 @@ export default ({ app }) => {
         passwordField: 'password', // this is the virtual field on the model
       },
       (email, password, done) => {
-        User.findOne({ email })
+        UserModel.findOne({ email })
           .then(user => {
-            console.log('User: ', user);
 
             if (!user) {
               return done(null, false, {
@@ -82,19 +81,19 @@ export default ({ app }) => {
         jwtFromRequest: JWTExtract.fromAuthHeaderAsBearerToken(),
         secretOrKey: config.secretOrKey,
       },
-      (jwtPayload, cb) => User.find({ userId: jwtPayload.userId }, '-_id -__v -createdAt')
+      (jwtPayload, cb) => UserModel.findOne({ _id: jwtPayload.userId }, '-_id -__v -createdAt')
         .then(user => cb(null, user))
         .catch(err => cb(err)),
     ),
   );
 
-  passport.use(User.createStrategy());
+  passport.use(UserModel.createStrategy());
 
   /**
    * This function is used in conjunction with the `passport.authenticate()` method.  See comments in
    * `passport.use()` above ^^ for explanation
    */
-  passport.serializeUser(User.serializeUser());
+  passport.serializeUser(UserModel.serializeUser());
 
   /**
    * This function is used in conjunction with the `app.use(passport.session())` middleware defined below.
@@ -103,5 +102,5 @@ export default ({ app }) => {
    * In summary, this method is "set" on the passport object and is passed the user ID stored in the
    * `req.session.passport` object later on.
    */
-  passport.deserializeUser(User.deserializeUser());
+  passport.deserializeUser(UserModel.deserializeUser());
 };

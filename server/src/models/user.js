@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import mongoose from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose';
+import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import { v1 as uuidv1 } from 'uuid';
 
@@ -68,6 +69,24 @@ userSchema.methods.generateJWT = function() {
     secretOrKey
   );
   return token;
+};
+
+export const validateUser = (user) => {
+  const schema = {
+    name: Joi.string().min(2).max(30).required(),
+    username: Joi.string()
+      .min(2)
+      .max(20)
+      .regex(/^[a-zA-Z0-9_]+$/)
+      .required(),
+    password: Joi.string()
+      .min(6)
+      .max(20)
+      .allow('')
+      .allow(null),
+  };
+
+  return Joi.validate(user, schema);
 };
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
