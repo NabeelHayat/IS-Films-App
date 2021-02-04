@@ -23,7 +23,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start-prod": "yarn build && node dist/bin/www.js",
+    "start": "yarn build && node dist/bin/www",
     "start-dev": "babel-watch src/bin/www.js",
     "server": "babel-watch src/bin/www.js",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
@@ -49,8 +49,6 @@
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "jsonwebtoken": "^8.5.1",
-    "jwt-simple": "^0.5.6",
-    "lodash": "^4.17.20",
     "mongoose": "^5.11.14",
     "mongoose-currency": "^0.2.0",
     "morgan": "^1.10.0",

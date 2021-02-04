@@ -20,10 +20,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build": "./scripts/watch-prod.sh && ./scripts/watch-prod-client.sh",
+    "start-prod":"./scripts/build-prod.sh",
     "start": "./scripts/build-prod.sh",
     "start-dev": "./scripts/build-dev.sh",
     "build-dev": "./scripts/watch-dev.sh",
-    "build": "./scripts/watch-prod.sh",
     "lint": "eslint server client",
     "lint:fix": "eslint server client --fix",
     "eslint-check": "eslint --print-config .eslintrc.js"

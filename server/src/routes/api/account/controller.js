@@ -1,8 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Joi from 'joi';
-
 import UserModel from '../../../models/user';
-import token from '../../../utils/token';
 import { registerSchema, loginSchema } from '../../../services/validators';
 
 export default {

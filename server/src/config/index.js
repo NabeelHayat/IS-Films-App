@@ -1,13 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-// requires
-import _ from 'lodash';
+const env = process.env.NODE_ENV || 'production';
+console.log(env);
+const config = require(`./${env}`); // eslint-disable-line import/no-dynamic-require
 
-// module variables
-import config from './config.json';
-
-const defaultConfig = config.development;
-const environment = process.env.NODE_ENV || 'development';
-const environmentConfig = config[environment];
-const finalConfig = _.merge(defaultConfig, environmentConfig);
-
-export default finalConfig;
+export default config;
