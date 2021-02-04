@@ -5,13 +5,14 @@
       "app_desc": "my app desc",
       "PORT": 3000,
       "json_indentation": 4,
-      "DATATBASE_URL": "my-app-db-dev",
+      "DATATBASE_URL": "mongodb+srv://isFilmsUser:isFilmsUser@isfilmscluster.gjgjd.mongodb.net/isFilmsUser-db?retryWrites=true&w=majority",
       "secretOrKey": "IS_FILM_SECRECT_OR_KEY"
   },
   "production": {
       "NODE_ENV": "production",
       "PORT": 8080,
-      "DATATBASE_URL": "my-app-db-prod",
+      "DATATBASE_URL": "mongodb+srv://isFilmsUser:isFilmsUser@isfilmscluster.gjgjd.mongodb.net/isFilmsUser-prod-db?retryWrites=true&w=majority",
       "secretOrKey": "IS_FILM_SECRECT_OR_KEY"
   }
+  
 }

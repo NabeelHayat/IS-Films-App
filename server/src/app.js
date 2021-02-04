@@ -2,7 +2,9 @@ import express    from 'express';
 import bodyParser from 'body-parser';
 import morgan     from 'morgan';
 import path       from 'path';
+import mongoose   from 'mongoose';
 
+import config from './config';
 import routes     from './routes';
 import passport   from './services/passport';
 
@@ -12,6 +14,23 @@ const app          = express();
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// DB Config
+const dbConnection = config.DATATBASE_URL;
+
+// Connect to Mongo
+mongoose
+  .connect(dbConnection, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log('MongoDB Connected...');
+    // seedDb();
+  })
+  .catch((err) => console.log(err));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
