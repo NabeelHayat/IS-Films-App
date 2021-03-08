@@ -11,17 +11,20 @@ import Film from '../film';
 
 import Pagination from '../pagination';
 
-const FILM_URL =  'http://localhost:8080/api/v1/films/01a45100-66e2-11eb-8519-e1a23d4a1a962';
+const config = {
+    headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmVzSW4iOiIxMmgiLCJ1c2VySWQiOiJjMTQxYmIzMC02NmUwLTExZWItYWJlZS0wOTk1OWQ2ODQ3YmYiLCJ1c2VybmFtZSI6Im5hYmVlbGhheWF0ODciLCJlbWFpbCI6Im5hYmVlbC5oYXlhdDg3QGdtYWlsLmNvbSIsImlhdCI6MTYxMjQ0MDExOH0.4y763JbqmYkZ_FQgA7rcsepWPB6gzwJ_8Myl8lnmxYk` }
+};
+
+const FILM_URL =  'http://localhost:8080/api/v1/films';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    axios.get(FILM_URL).then((jsonResponse) => {
-      console.log(jsonResponse);
+    axios.get(FILM_URL, config).then((jsonResponse) => {
       dispatch({
         type: 'SEARCH_FILMS_SUCCESS',
-        payload: jsonResponse.film,
+        payload: jsonResponse.data.films,
       });
     });
   }, []);
@@ -38,8 +41,8 @@ const App = () => {
   ) : errorMessage ? (
     <div className="errorMessage">{errorMessage}</div>
   ) : (
-    films.map((movie, index) => (
-      <Film key={`${index}-${movie.Title}`} movie={movie} />
+    films.map((film, index) => (
+      <Film key={`${index}-${film.name}`} movie={film} />
     ))
   );
 

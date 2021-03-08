@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import upload from '../../../middleware/multerUpload';
+import multerUpload from '../../../middleware/multerUpload';
 import requireJwtAuth from '../../../middleware/requireJwtAuth';
 import FilmsController from './controller';
 import { filmIdSchema } from '../../../services/validators';
@@ -20,7 +20,7 @@ router
 router
   .route('/create')
 /** POST /api/v1/films/create - Create new film */
-  .post([requireJwtAuth, upload.single('poster')], FilmsController.createFilm);
+  .post([requireJwtAuth, multerUpload.single('poster')], FilmsController.uploadFilmPoster, FilmsController.createFilm);
 
 router.param('filmId', async (req, res, next, filmId) => {
   const { error } = filmIdSchema.validate({ filmId });
